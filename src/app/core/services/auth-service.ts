@@ -84,7 +84,13 @@ export class AuthService {
     }
   }
 
+  //Çierre de sesión
+  //Se elimina la sesión del usuario del localStorage y se limpia signal del servicio
+
   logout(): void {
+
+    localStorage.removeItem('currentUser');
+    this.currentUser.set(null);
 
 
   }
@@ -97,17 +103,17 @@ export class AuthService {
     return this.userRole() === role;
   }
 
-  isAdmin(role : string): boolean{
+  isAdmin(): boolean{
 
     return this.userRole() === UserRole.ADMIN;
 
   }
-  isProfessor(role : string): boolean{
+  isProfessor(): boolean{
 
     return this.userRole() === UserRole.PROFESSOR;
 
   }
-  isStudent(role : string): boolean{
+  isStudent(): boolean{
 
     return this.userRole() === UserRole.STUDENT;
   }
