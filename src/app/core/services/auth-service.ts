@@ -55,7 +55,7 @@ export class AuthService {
       if(user?.password !== password){
         return {
           success: false,
-          message: 'Contraseña incorrecta'
+          message: 'Contraseña incorrecta. Inténtalo de nuevo.'
         }
       }
 
