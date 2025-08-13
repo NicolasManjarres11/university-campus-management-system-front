@@ -2,6 +2,20 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
 
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
+    loadChildren: () => import('@features/users/users.routes').then(r => r.users_routes)
+  },
+  {
+    path: 'courses',
+    loadChildren: () => import('@features/courses/courses.routes').then(r => r.courses_routes)
+  }
+
 /*     { path: '', pathMatch: 'full', redirectTo: 'courses' }, */
 
 /*     // Login público (solo invitados)
@@ -55,5 +69,6 @@ export const routes: Routes = [
   
     { path: '**', redirectTo: '' } */
 
+    
 
 ];
