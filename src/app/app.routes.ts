@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { roleGuard } from '@core/guards/role.guard';
+import { MainLayout } from '@shared/components/layout/main.layout';
 
 export const routes: Routes = [
 
@@ -12,9 +14,33 @@ export const routes: Routes = [
     loadChildren: () => import('@features/users/users.routes').then(r => r.users_routes)
   },
   {
-    path: 'courses',
-    loadChildren: () => import('@features/courses/courses.routes').then(r => r.courses_routes)
-  }
+    path: '',
+    component: MainLayout,
+    canActivate: [roleGuard],
+    children: [
+      {
+        path: 'home',
+        loadComponent: () => import('@features/home/home').then(c => c.Home)
+      },
+      {
+        path: 'courses',
+        loadChildren: () => import('@features/courses/courses.routes').then(r => r.courses_routes)
+      },
+      {
+        path: 'grades',
+        loadChildren: () => import('@features/grades/grades.routes').then(r => r.grades_routes)
+      },
+      {
+        path: 'departments',
+        loadChildren: () => import('@features/departments/departments.routes').then(r => r.departments_routes)
+      },
+      {
+        path: 'schedules',
+        loadChildren: () => import('@features/schedules/schedules.routes').then(r => r.schedules_routes)
+      },
+    ]
+  },
+ 
 
 /*     { path: '', pathMatch: 'full', redirectTo: 'courses' }, */
 

@@ -65,7 +65,7 @@ export class AuthService {
       delete userWithoutPassword.password; //Eliminamos la contraseña para guardar el usuario logueado en el localStorage, conservamos las demás propiedades
 
   
-      localStorage.setItem('currenUser', JSON.stringify(userWithoutPassword)); //Guardamos el usuario en el localStorage
+      localStorage.setItem('currentUser', JSON.stringify(userWithoutPassword)); //Guardamos el usuario en el localStorage
       this.currentUser.set(userWithoutPassword); //Lo guardamos en la signal del servicio.
 
       return {

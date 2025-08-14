@@ -4,11 +4,11 @@ import { Register } from "./components/register/register";
 
 export const users_routes: Routes = [
     {
-        path:'login',
-        component: Login
+        path: 'login',
+        loadComponent: () => import('@features/users/components/login/login').then(c => c.Login)
     },
     {
         path: 'register',
-        component: Register
+        loadComponent: () => import('@features/users/components/register/register').then(c => c.Register)
     }
 ]
