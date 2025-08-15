@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { roleGuard } from '@core/guards/role.guard';
+import { UserRole } from '@features/users/models/user.model';
 import { MainLayout } from '@shared/components/layout/main.layout';
 
 export const routes: Routes = [
@@ -11,7 +12,16 @@ export const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () => import('@features/users/users.routes').then(r => r.users_routes)
+    children: [
+      {
+        path: 'login',
+        loadComponent: () => import('@features/users/components/login/login').then(c => c.Login)
+      },
+      {
+        path: 'register',
+        loadComponent: () => import('@features/users/components/register/register').then(c => c.Register)
+      }
+    ]
   },
   {
     path: '',
@@ -21,6 +31,12 @@ export const routes: Routes = [
       {
         path: 'home',
         loadComponent: () => import('@features/home/home').then(c => c.Home)
+      },
+      {
+        path: 'users',
+        loadComponent: () => import('@features/users/components/users/users').then(c => c.Users),
+        canActivate: [roleGuard],
+        data: { roles: [UserRole.ADMIN] }
       },
       {
         path: 'courses',

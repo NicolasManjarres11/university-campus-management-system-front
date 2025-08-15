@@ -10,5 +10,10 @@ export const users_routes: Routes = [
     {
         path: 'register',
         loadComponent: () => import('@features/users/components/register/register').then(c => c.Register)
-    }
+    },
+    {
+        path: 'users',
+        loadComponent: () => import('@features/users/components/users/users').then(c => c.Users)
+    },
+
 ]
