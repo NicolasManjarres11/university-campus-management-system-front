@@ -39,6 +39,19 @@ export const routes: Routes = [
         data: { roles: [UserRole.ADMIN] }
       },
       {
+        path: 'users/create',
+        loadComponent: () => import('@features/users/components/create.user/form.user').then(c => c.FormUser),
+        canActivate: [roleGuard],
+        data: { roles: [UserRole.ADMIN] }
+      },
+      {
+        path: 'users/edit/:userId',
+        loadComponent: () => import('@features/users/components/create.user/form.user').then(c => c.FormUser),
+        canActivate: [roleGuard],
+        data: { roles: [UserRole.ADMIN] }
+      },
+
+      {
         path: 'courses',
         loadChildren: () => import('@features/courses/courses.routes').then(r => r.courses_routes)
       },

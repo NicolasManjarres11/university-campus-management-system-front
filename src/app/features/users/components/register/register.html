@@ -1,0 +1,192 @@
+<div class="w-full">
+
+    @if(loading()){
+        <app-loading 
+          [message]="'Preparando registro...'" 
+          [spinnerColor]="'border-purple-600'" 
+          [bgColor]="'bg-white'" 
+          [bgOpacity]="'bg-opacity-95'">
+        </app-loading>
+      }
+
+    <!-- navbar -->
+
+    <div class="fixed inset-x-0 top-0 z-10 bg-purple-900 border-b border-purple-800 shadow-sm">
+      <div class="max-w-screen-xl mx-auto h-14 sm:h-16 px-4 flex items-center justify-between gap-3 sm:gap-4">
+        <h1 class="text-white text-lg sm:text-xl font-semibold truncate flex-1 min-w-0">
+            Campus Management
+        </h1>
+
+        <div class="flex items-center gap-2 sm:gap-3 md:gap-4 flex-shrink-0">
+            <span class="hidden md:inline text-white/90 whitespace-nowrap">¿Ya tienes una cuenta?</span>
+            <a class="px-3 md:px-5 py-2 text-sm md:text-base bg-purple-600 font-semibold text-white rounded-full hover:bg-purple-500 transition-colors duration-300 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white focus-visible:ring-offset-purple-900" 
+               href="/login">
+                Inicia sesión aquí!
+            </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex w-full min-h-screen pt-20 px-4 justify-center items-center bg-gray-100">
+
+        <div class="w-full max-w-md bg-white text-center rounded-2xl shadow-xl p-6 sm:p-8">
+            <h1 class="text-3xl font-bold">Crea tu cuenta en Campus Management</h1>
+            <h2 class="text-lg mt-8">Registrate para tener acceso a tu herramienta de gestión del Campus Universitario</h2>
+
+            <form  
+            [formGroup]="registerForm"
+            (ngSubmit)="onSubmit()"
+            action="" class="mt-6">
+                <div class="flex flex-col space-y-4">
+                    <div class="text-left">
+                      <label for="name" class="sr-only">Nombres</label>
+                      <input 
+                        id="name"
+                        formControlName="name"
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-black placeholder:text-gray-500 placeholder:opacity-100 caret-black focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                        type="text"
+                        placeholder="Nombres"
+                        autocomplete="name"
+                        required>
+
+                        @if(registerForm.get("name")?.invalid && registerForm.get("name")?.touched){
+                            <p class="mt-1 text-sm text-red-600">El nombre es obligatorio.</p>
+                        }
+                        
+                    </div>
+                    <div class="text-left">
+                      <label for="lastname" class="sr-only">Apellidos</label>
+                      <input 
+                        id="lastname"
+                        formControlName="lastname"
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-black placeholder:text-gray-500 placeholder:opacity-100 caret-black focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                        type="text"
+                        placeholder="Apellidos"
+                        autocomplete="lastname"
+                        required>
+
+                        @if(registerForm.get("lastname")?.invalid && registerForm.get("lastname")?.touched){
+                            <p class="mt-1 text-sm text-red-600">El apellido es obligatorio.</p>
+                        }
+                        
+                    </div>
+                    <div class="text-left">
+                      <label for="email" class="sr-only">Correo electrónico</label>
+                      <input 
+                        id="email"
+                        formControlName="email"
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-black placeholder:text-gray-500 placeholder:opacity-100 caret-black focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                        type="email"
+                        placeholder="Correo electrónico"
+                        autocomplete="email"
+                        required>
+
+                        @if(registerForm.get("email")?.invalid && registerForm.get("email")?.touched){
+
+                            @if(registerForm.get("email")?.errors?.["required"]){
+                                <p class="mt-1 text-sm text-red-600">El correo electrónico es obligatorio.</p>
+                            }
+                            @if(registerForm.get("email")?.errors?.["pattern"]){
+                                <p class="mt-1 text-sm text-red-600">Dominio no válido. El dominio debe ser 'devsenior.edu.co'.</p>
+                            }
+                        }
+                        
+                    </div>
+                    <div class="text-left">
+                      <label for="username" class="sr-only">Nombre de usuario</label>
+                      <input 
+                        id="username"
+                        formControlName="username"
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-black placeholder:text-gray-500 placeholder:opacity-100 caret-black focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                        type="text"
+                        placeholder="Nombre de usuario"
+                        autocomplete="username"
+                        required>
+
+                        @if(registerForm.get("username")?.invalid && registerForm.get("username")?.touched){
+                            <p class="mt-1 text-sm text-red-600">El nombre de usuario es obligatorio.</p>
+                        }
+                        
+                    </div>
+                    <div class="text-left">
+                      <label for="password" class="sr-only">Contraseña</label>
+                      <input 
+                        id="password"
+                        formControlName="password"
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-black placeholder:text-gray-500 placeholder:opacity-100 caret-black focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                        type="password"
+                        placeholder="Contraseña"
+                        autocomplete="current-password"
+                        required>
+                        
+
+                        @if(registerForm.get("password")?.invalid && registerForm.get("password")?.touched){
+
+                            @if(registerForm.get("password")?.errors?.["required"]){
+                                <p class="mt-1 text-sm text-red-600">La contraseña es obligatorio.</p>
+                            }
+                            @if(registerForm.get("password")?.errors?.["minlength"]){
+                                <p class="mt-1 text-sm text-red-600">La contraseña debe tener mínimo 8 carácteres.</p>
+                            }
+                        }
+                    </div>
+                    <div class="text-left">
+                      <label for="password" class="sr-only">Confirmar contraseña</label>
+                      <input 
+                        id="confirm-password"
+                        formControlName="confirmPassword"
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-black placeholder:text-gray-500 placeholder:opacity-100 caret-black focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                        type="password"
+                        placeholder="Confirmar contraseña"
+                        autocomplete="current-password"
+                        required>
+
+                        @if(registerForm.get("confirmPassword")?.invalid && registerForm.get("confirmPassword")?.touched){
+
+                            @if(registerForm.get("confirmPassword")?.errors?.["required"]){
+                                <p class="mt-1 text-sm text-red-600">Debes confirmar la contraseña.</p>
+                            }
+                        }
+
+                        
+                        @if(passwordError()){
+                            <p class="mt-1 text-sm text-red-600">{{passwordError()}}</p>
+                        }
+
+                    </div>
+                    @if(error() !== null){
+                        <div class="text-red-500 text-sm">
+                            {{error()}}
+                        </div>
+                     }
+                 <div class="flex justify-center mt-1">
+                    <button type="submit"   class="w-full h-10 sm:h-11 bg-purple-600 text-white font-semibold rounded-lg shadow-md cursor-pointer transition-colors duration-300 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-40 disabled:cursor-not-allowed">
+                         Registrar cuenta
+                     </button>
+                 </div>
+ 
+                 </div>
+
+             </form>
+ 
+         </div>
+ 
+     </div>
+
+
+
+     @if(showSuccess()){
+        <div class="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-md bg-white/30">
+            <div class="bg-white rounded-3xl p-8 max-w-md w-full mx-4 text-center shadow-xl border-2 border-black relative">
+              <h2 class="text-2xl font-bold mb-2">¡Bienvenido!</h2>
+              <p class="text-xl mt-4 mb-6">Usuario creado exitosamente.</p>
+              <div class="flex justify-center">
+                <svg class="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+      }
+ 
+ </div>

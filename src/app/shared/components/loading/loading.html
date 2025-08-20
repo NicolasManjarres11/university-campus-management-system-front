@@ -1,0 +1,10 @@
+<div [class]="fullScreen() ? 'fixed inset-0' : 'absolute top-0 left-0 right-0 bottom-0'" 
+     class="flex items-center justify-center" 
+     [ngClass]="[bgColor(), bgOpacity()]"
+     style="z-index: 40;">
+  <div class="text-center">
+    <div [class]="spinnerSize() + ' border-4 border-t-transparent rounded-full animate-spin mx-auto'" 
+         [ngClass]="spinnerColor()"></div>
+    <p class="mt-4 text-lg font-medium" [ngClass]="textColor()">{{ message() }}</p>
+  </div>
+</div>

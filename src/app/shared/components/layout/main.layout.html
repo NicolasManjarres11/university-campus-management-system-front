@@ -1,0 +1,82 @@
+<div class="min-h-screen flex flex-col">
+
+    <!-- header -->
+
+    <header class="fixed top-0 left-0 right-0 z-10 bg-purple-900 text-white shadow-md">
+        <div class="w-full py-3 px-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold">Campus Management</h1>
+            <nav class="hidden lg:inline  mt-2">
+                <ul class="flex space-x-2">
+                  <li>
+                    <a routerLink="/home" routerLinkActive="border-b-2 border-white" class="py-2 px-4 text-sm inline-block font-bold rounded cursor-pointer hover:text-purple-800 hover:bg-white hover:font-semibold transition-colors">
+                      Inicio
+                    </a>
+                  </li>
+                  @if(authService.isAdmin()){
+                    <li>
+                        <a routerLink="/users" routerLinkActive="border-b-2 border-white" class="py-2 px-4 text-sm inline-block font-bold rounded cursor-pointer hover:text-purple-800 hover:bg-white hover:font-semibold transition-colors">
+                          Usuarios
+                        </a>
+                      </li>
+                  }
+
+                  <li>
+                    <a routerLink="/courses" routerLinkActive="border-b-2 border-white" class="py-2 px-4 text-sm inline-block font-bold rounded cursor-pointer hover:text-purple-800 hover:bg-white hover:font-semibold transition-colors">
+                      Cursos
+                    </a>
+                  </li>
+                  <li>
+                    <a routerLink="/departments" routerLinkActive="border-b-2 border-white" class="py-2 px-4 text-sm inline-block font-bold rounded cursor-pointer hover:text-purple-800 hover:bg-white hover:font-semibold transition-colors">
+                      Departamentos
+                    </a>
+                  </li>
+                  <li>
+                    <a routerLink="/schedules" routerLinkActive="border-b-2 border-white" class="py-2 px-4 text-sm inline-block font-bold rounded cursor-pointer hover:text-purple-800 hover:bg-white hover:font-semibold transition-colors">
+                      Horarios
+                    </a>
+                  </li>
+                  <li>
+                    <a routerLink="/grades" routerLinkActive="border-b-2 border-white" class="py-2 px-4 text-sm inline-block font-bold rounded cursor-pointer hover:text-purple-800 hover:bg-white hover:font-semibold transition-colors">
+                      Calificaciones
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            <div class="flex items-center gap-4">
+                <span>
+                    @if(authService.user()?.name){
+                        {{authService.user()?.name}}
+                    } @else {
+                        Usuario
+                    }
+                    </span>
+                <button (click)="logout()"
+                        class="py-1 px-3 bg-purple-700 rounded hover:bg-purple-600 cursor-pointer">
+                    Cerrar sesión
+                </button>
+            </div>
+
+
+
+
+    </div>
+  </header>
+
+  <div class="h-12 lg:h-16"></div>
+
+  <main class="flex-1 p-6 bg-gray-50">
+    <div class="container mx-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+
+    <!-- Footer (opcional) -->
+<!--     <footer class="bg-gray-100 border-t py-4">
+        <div class="container mx-auto px-4 text-center text-gray-600">
+          <p>Sistema de Gestión de Campus Universitario © 2023</p>
+        </div>
+      </footer> -->
+
+
+</div>
