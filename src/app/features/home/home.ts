@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '@core/services';
 
@@ -11,9 +11,15 @@ import { AuthService } from '@core/services';
 export class Home {
   
   authService = inject(AuthService);
+  userId = signal<string | undefined>('');
 
   constructor(){
 
+  }
+
+  ngOnInit(): void {
+
+    this.userId.set(this.authService.user()?.id)
   }
 
   

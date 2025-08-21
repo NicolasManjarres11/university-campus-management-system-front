@@ -36,7 +36,7 @@ export class UserService{
             }
             
             // Devolvemos los usuarios sin contraseñas
-            
+
             const usersWithoutPasswords = users.map(user => {
                 const { password, ...userWithoutPassword } = user;
                 return userWithoutPassword as User;
@@ -69,16 +69,6 @@ export class UserService{
 
     //Filtro de usuario
 
-    searchUsers(query: string): Promise<User[]> {
-        return new Promise(resolve => {
-          setTimeout(() => {
-            resolve(this.users().filter(u =>   u.name.includes(query) ||
-            u.username.includes(query) ||
-            u.email.includes(query) ||
-            u.role.includes(query)));
-          }, 300);
-        });
-      }
 
     //Registro de usuario
 
@@ -274,7 +264,14 @@ export class UserService{
         }
 
         const users = this.users();
-        const userIndex = users.findIndex(u => u.id === user.id); //Buscamos la posicion del usuarios
+
+
+        
+        const userIndex = users.findIndex(u => u.id === id); //Buscamos la posicion del usuarios
+
+
+        
+
 
         if (!(userIndex > -1)) {
             return { 
@@ -284,6 +281,7 @@ export class UserService{
         }
 
         const originalUser = users[userIndex];
+
 
         if (
             user.username && //Si hay un valor en username
@@ -301,12 +299,14 @@ export class UserService{
             ...originalUser,
             ...user
         }
+
+        
         
           //Creamos un nuevo array de usuarios con el usuario actualizado
           //Si el ID coincide, cambia el user existente por el actualizado
           //Si el ID no coincide, se mantiene el usuario existente
 
-        const updatedUsers = users.map(u => (u.id === user.id ? updatedUser : u));
+        const updatedUsers = users.map(u => (u.id === id ? updatedUser : u));
 
           //Actualizamos signal y Storage
         

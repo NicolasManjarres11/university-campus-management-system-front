@@ -1,14 +1,15 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Loading } from '@shared/components';
 import { UserService } from '../../services/user.service';
-import { User } from '../../models/user.model';
+import { User, UserRole } from '../../models/user.model';
 import { Router, RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, Loading, RouterLink],
+  imports: [CommonModule, Loading, RouterLink, FormsModule],
   templateUrl: './users.html',
   styleUrl: './users.css'
 })
@@ -18,12 +19,50 @@ export class Users {
   loading = signal<boolean>(true);
   error = signal<string | null>(null);
   users = signal<User[]>([]);
+  allUsers = signal<User[]>([]);
   successMessage = signal<string | null>(null);
   showSuccess = signal<boolean>(false);
   showDeleteConfirmation = signal<boolean>(false);
   userToDelete = signal<string | null>(null);
+  filter = signal<string>('');
 
-  constructor(private userService: UserService, private route: Router) {}
+  constructor(private userService: UserService, private route: Router) {
+
+    effect(() => {
+      if(!this.filter()){
+        this.users.set(this.allUsers())
+      } else {
+
+        const searchTerm = this.filter().toLowerCase();
+
+        const getRole = (role: UserRole): boolean => {
+          switch(role){
+            case UserRole.ADMIN:
+              return this.filter().includes('admin');
+              case UserRole.PROFESSOR:
+                return this.filter().includes('profesor');
+              case UserRole.STUDENT:
+                return this.filter().includes('estudiante');
+              default:
+                return false;
+          }
+        }
+
+
+
+        this.users.set(this.allUsers()
+        .filter((u) => {
+          // Concatenar nombre y apellido para la búsqueda
+          const fullName = `${u.name} ${u.lastname}`.toLowerCase();
+          
+          return fullName.includes(searchTerm) ||
+                 u.email.toLowerCase().includes(searchTerm) ||
+                 getRole(u.role as UserRole);
+        })
+      );
+      }
+    })
+  }
 
   ngOnInit(): void {
     this.loadUsers();
@@ -35,8 +74,9 @@ export class Users {
 
     // TRaemos los usuarios con el servicio
     this.userService.getAllUsers()
-      .then(users => {
-        this.users.set(users);
+      .then(data => {
+        this.allUsers.set(data);
+        this.users.set(this.allUsers());
         setTimeout(() => {
           this.loading.set(false);
         }, 800);

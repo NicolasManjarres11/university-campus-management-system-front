@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '@core/services';
 import { UserService } from '@features/users/services/user.service';
@@ -11,6 +11,7 @@ import { UserService } from '@features/users/services/user.service';
 })
 export class MainLayout {
 
+  userId = signal<string | undefined>('')
   authService = inject(AuthService)
 
   constructor(private route : Router, private userService: UserService){
@@ -18,7 +19,8 @@ export class MainLayout {
   }
 
   ngOnInit(): void {
-    console.log(this.userService.getAllUsers());
+    
+    this.userId.set(this.authService.user()?.id)
     
   }
 

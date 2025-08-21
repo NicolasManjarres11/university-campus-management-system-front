@@ -69,7 +69,7 @@ export class Register {
 
   }
 
-  //Metodo para validar que las contrasñeas coincidan
+  //Metodo para validar que las contraseñas coincidan
 
   validatePasswords(): void {
     const password = this.registerForm.get('password')?.value;

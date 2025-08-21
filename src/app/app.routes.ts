@@ -40,15 +40,15 @@ export const routes: Routes = [
       },
       {
         path: 'users/create',
-        loadComponent: () => import('@features/users/components/create.user/form.user').then(c => c.FormUser),
+        loadComponent: () => import('@features/users/components/formUser/form.user').then(c => c.FormUser),
         canActivate: [roleGuard],
         data: { roles: [UserRole.ADMIN] }
       },
       {
         path: 'users/edit/:userId',
-        loadComponent: () => import('@features/users/components/create.user/form.user').then(c => c.FormUser),
+        loadComponent: () => import('@features/users/components/formUser/form.user').then(c => c.FormUser),
         canActivate: [roleGuard],
-        data: { roles: [UserRole.ADMIN] }
+        data: { roles: [UserRole.ADMIN, UserRole.PROFESSOR, UserRole.STUDENT] }
       },
 
       {
