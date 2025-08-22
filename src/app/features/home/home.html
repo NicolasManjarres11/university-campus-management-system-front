@@ -1,0 +1,197 @@
+<div class="min-h-screen bg-gray-50 py-12">
+
+    <div class="mb-10 text-center">
+        <h1 class="text-3xl font-bold">
+            Campus Virtual
+        </h1>
+        <div class="h-1 w-30 bg-purple-600 mx-auto mt-4 mb-6"></div>
+        <p class="text-gray-600 max-w-2xl mx-auto">
+            Bienvenido a la plataforma de gestión académica. Selecciona una opción para comenzar.
+        </p>
+        
+    </div>
+
+    <!-- Cards -->
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+
+        @if(authService.isAdmin()) 
+        {
+            <div class="group">
+                <div class="bg-white rounded-xl overflow-hidden shadow-md group-hover:shadow-md transition-all duration-300 group-hover:-translate-y-1.5 h-full">
+                    <div class="p-8 flex flex-col h-full">
+                        <div class="w-16 h-16 bg-pink-100 rounded-lg flex items-center justify-center mb-4">
+    
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+    
+                        </div>
+    
+                        <h2 class="text-xl font-semibold mb-2">
+                            Usuarios
+                        </h2>
+                        <p class="text-gray-600 mb-6 flex-1">
+                            Administra los usuarios del sistema, sus roles y permisos.
+                        </p>
+                        <a routerLink="/users" class="inline-flex items-center text-pink-600 hover:text-pink-800 font-medium group-hover:translate-x-1 transition-transform duration-300 mt-auto">
+                            Acceder
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if(!authService.isAdmin()) 
+        {
+            <div class="group">
+                <div class="bg-white rounded-xl overflow-hidden shadow-md group-hover:shadow-md transition-all duration-300 group-hover:-translate-y-1.5 h-full">
+                    <div class="p-8 flex flex-col h-full">
+                        <div class="w-16 h-16 bg-pink-100 rounded-lg flex items-center justify-center mb-4">
+    
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+    
+                        </div>
+    
+                        <h2 class="text-xl font-semibold mb-2">
+                            Mi perfil
+                        </h2>
+                        <p class="text-gray-600 mb-6 flex-1">
+                            Consulta y verifica la información de tu usuario.
+                        </p>
+                        <a [routerLink]="['/users/edit/', userId()]" class="inline-flex items-center text-pink-600 hover:text-pink-800 font-medium group-hover:translate-x-1 transition-transform duration-300 mt-auto">
+                            Acceder
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+
+        <div class="group">
+            <div class="bg-white rounded-xl overflow-hidden shadow-md group-hover:shadow-md transition-all duration-300 group-hover:-translate-y-1.5 h-full">
+                <div class="p-8 flex flex-col h-full">
+                    <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                            <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                        </svg>
+
+                    </div>
+
+                    <h2 class="text-xl font-semibold mb-2">
+                        Cursos
+                    </h2>
+                    <p class="text-gray-600 mb-6 flex-1">
+                        Administra los cursos disponibles, inscripciones y contenido académico.
+                    </p>
+                    <a routerLink="/courses" class="inline-flex items-center text-purple-600 hover:text-purple-800 font-medium group-hover:translate-x-1 transition-transform duration-300 mt-auto">
+                        Acceder
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="group">
+            <div class="bg-white rounded-xl overflow-hidden shadow-md group-hover:shadow-md transition-all duration-300 group-hover:-translate-y-1.5 h-full">
+                <div class="p-8 flex flex-col h-full">
+                    <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+
+                    </div>
+
+                    <h2 class="text-xl font-semibold mb-2">
+                        Departamentos
+                    </h2>
+                    <p class="text-gray-600 mb-6 flex-1">
+                        Gestiona los departamentos académicos y su estructura organizativa.
+                    </p>
+                    <a routerLink="/departments" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium group-hover:translate-x-1 transition-transform duration-300 mt-auto">
+                        Acceder
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="group">
+            <div class="bg-white rounded-xl overflow-hidden shadow-md group-hover:shadow-md transition-all duration-300 group-hover:-translate-y-1.5 h-full">
+                <div class="p-8 flex flex-col h-full">
+                    <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+
+                    </div>
+
+                    <h2 class="text-xl font-semibold mb-2">
+                        Horarios
+                    </h2>
+                    <p class="text-gray-600 mb-6 flex-1">
+                        Consulta, confirma y administra los horarios de clases y disponibilidad.
+                    </p>
+                    <a routerLink="/schedules" class="inline-flex items-center text-green-600 hover:text-green-800 font-medium group-hover:translate-x-1 transition-transform duration-300 mt-auto">
+                        Acceder
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="group">
+            <div class="bg-white rounded-xl overflow-hidden shadow-md group-hover:shadow-md transition-all duration-300 group-hover:-translate-y-1.5 h-full">
+                <div class="p-8 flex flex-col h-full">
+                    <div class="w-16 h-16 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+
+                    </div>
+
+                    <h2 class="text-xl font-semibold mb-2">
+                        Calificaciones
+                    </h2>
+                    <p class="text-gray-600 mb-6 flex-1">
+                        Registra y consulta las calificaciones y evaluaciones académicas.
+                    </p>
+                    <a routerLink="/grades" class="inline-flex items-center text-amber-600 hover:text-amber-800 font-medium group-hover:translate-x-1 transition-transform duration-300 mt-auto">
+                        Acceder
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+

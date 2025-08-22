@@ -1,0 +1,95 @@
+<div class="w-full">
+
+    @if(loading()){
+        <app-loading 
+          [message]="'Cargando...'" 
+          [spinnerColor]="'border-purple-600'" 
+          [bgColor]="'bg-white'" 
+          [bgOpacity]="'bg-opacity-95'">
+        </app-loading>
+      }
+
+    <!-- navbar -->
+
+    <div class="fixed inset-x-0 top-0 z-10 bg-purple-900 border-b border-purple-800 shadow-sm">
+      <div class="max-w-screen-xl mx-auto h-14 sm:h-16 px-4 flex items-center justify-between gap-3 sm:gap-4">
+        <h1 class="text-white text-lg sm:text-xl font-semibold truncate flex-1 min-w-0">
+            Campus Management
+        </h1>
+
+        <div class="flex items-center gap-2 sm:gap-3 md:gap-4 flex-shrink-0">
+            <span class="hidden md:inline text-white/90 whitespace-nowrap">¿Eres estudiante nuevo?</span>
+            <a class="px-3 md:px-5 py-2 text-sm md:text-base bg-purple-600 font-semibold text-white rounded-full hover:bg-purple-500 transition-colors duration-300 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white focus-visible:ring-offset-purple-900" 
+               href="/register">
+                ¡Regístrate aquí!
+            </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex w-full min-h-screen pt-20 px-4 justify-center items-center bg-gray-100">
+
+        <div class="w-full max-w-md bg-white text-center rounded-2xl shadow-xl p-6 sm:p-8">
+            <h1 class="text-xl font-bold">¡Bienvenido a tu herramienta de gestión!</h1>
+            <h2 class="text-lg mt-2">Iniciar Sesión</h2>
+
+            <form  
+            [formGroup]="loginForm"
+            (ngSubmit)="onSubmit()"
+            action="" class="mt-6">
+                <div class="flex flex-col space-y-4">
+                    <div class="text-left">
+                      <label for="username" class="sr-only">Nombre de usuario</label>
+                      <input 
+                        id="username"
+                        formControlName="username"
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-black placeholder:text-gray-500 placeholder:opacity-100 caret-black focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                        type="text"
+                        placeholder="Nombre de usuario"
+                        autocomplete="username"
+                        required>
+                        
+                        
+
+<!--                         <div *ngIf="error()" class="text-red-500 text-sm">
+                            {{ error() }}
+                        </div> -->
+                 </div>
+                <div class="text-left">
+                      <label for="password" class="sr-only">Contraseña</label>
+                      <input 
+                        id="password"
+                        formControlName="password"
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-black placeholder:text-gray-500 placeholder:opacity-100 caret-black focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                        type="password"
+                        placeholder="Contraseña"
+                        autocomplete="current-password"
+                        required>
+                 </div>
+
+                 @if(error() !== null){
+                    <div class="text-red-500 text-sm">
+                        {{error()}}
+                    </div>
+                 }
+                 <div class="flex justify-center mt-1">
+                    <button type="submit"   class="w-full h-10 sm:h-11 bg-purple-600 text-white font-semibold rounded-lg shadow-md cursor-pointer transition-colors duration-300 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-40 disabled:cursor-not-allowed">
+                         Iniciar sesión
+                     </button>
+                 </div>
+ 
+                 </div>
+                 <div class="flex flex-col">
+                     <a href="#"
+                        class="block mt-2 text-sm text-purple-600 text-center hover:text-purple-700 hover:underline focus:outline-none focus:ring-2 focus:ring-purple-500 rounded">
+                         ¿Olvidaste la contraseña?
+                     </a>
+ 
+                 </div>
+             </form>
+ 
+         </div>
+ 
+     </div>
+ 
+ </div>
