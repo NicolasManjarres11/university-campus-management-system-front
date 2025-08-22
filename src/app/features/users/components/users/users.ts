@@ -53,8 +53,7 @@ export class Users {
         this.users.set(this.allUsers()
         .filter((u) => {
           // Concatenar nombre y apellido para la búsqueda
-          const fullName = `${u.name} ${u.lastname}`.toLowerCase();
-          
+          const fullName = `${u.name} ${u.lastname}`.toLowerCase();          
           return fullName.includes(searchTerm) ||
                  u.email.toLowerCase().includes(searchTerm) ||
                  getRole(u.role as UserRole);

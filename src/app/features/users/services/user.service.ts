@@ -53,7 +53,7 @@ export class UserService{
         const currentUser = this.authService.user();
         const userById = this.users().find(u => u.id === id);
         return new Promise((resolve, reject) => {
-          if (currentUser?.role === UserRole.STUDENT) {
+          if (currentUser?.role === UserRole.STUDENT && currentUser.id !== id) {
             reject('No tienes permisos para realizar esta acción');
             return;
           }
@@ -292,6 +292,10 @@ export class UserService{
                 success: false, 
                 message: 'El nombre de usuario ya está en uso.' };
         }
+
+        if (user.password !== undefined && user.password.trim() === '') {
+            delete user.password; // Eliminar contraseña vacía para mantener la original
+          }
 
           //Mezclamos datos antiguos y nuevos
 
