@@ -1,9 +1,9 @@
 import { Injectable, signal } from '@angular/core';
 import { Course, CreateCourseRequest, UpdateCourseRequest } from '../models/course.model';
 import { AuthService } from '@core/services';
+import { EntityRelationshipService } from '@core/services/entity-relationship.service';
 import { UserRole } from '@features/users/models/user.model';
 import { UserService } from '@features/users/services/user.service';
-import { DepartmentService } from '@features/departments/services/department.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +17,9 @@ export class CourseService {
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private departmentService: DepartmentService
+    private relationshipService: EntityRelationshipService
   ){
     this.loadCoursesFromStorage();
-
   }
 
   getAllCourses(): Promise<Course[]>{
@@ -134,6 +133,9 @@ export class CourseService {
     const updateCourses = [...this.courses(), newCourse];
     this.courses.set(updateCourses);
     this.saveCoursesToStorage();
+    
+    // Registrar la relación curso-departamento
+    this.relationshipService.registerCourseWithDepartment(id, course.departmentId);
 
     return {
       success: true,
@@ -163,6 +165,15 @@ export class CourseService {
     }
 
     const originalCourse = courses[courseIndex];
+    
+    // Actualizar la relación si cambió el departamento
+    if (course.departmentId && course.departmentId !== originalCourse.departmentId) {
+      this.relationshipService.updateCourseDepartment(
+        id, 
+        originalCourse.departmentId, 
+        course.departmentId
+      );
+    }
 
     //Validamos que el nombre del curso no exista
     if (course.name && course.name.toLowerCase() !== originalCourse.name.toLowerCase() && course.id !== originalCourse.id) {
@@ -251,6 +262,12 @@ if (course.code && course.code !== originalCourse.code) {
       }
      }
 
+     const courseToDelete = this.courses().find(c => c.id === id);
+     if (courseExist) {
+       // Eliminar la relación curso-departamento
+       this.relationshipService.removeCourseFromDepartment(id, courseExist.departmentId);
+     }
+     
      const updateCourses = this.courses().filter(c => c.id !== id)
      this.courses.set(updateCourses);
      this.saveCoursesToStorage();
@@ -313,10 +330,12 @@ if (course.code && course.code !== originalCourse.code) {
     return professors.some(p => p.id === professorId);
 }
 
-private isValidDepartment(departmentId: string): boolean {
-  // Necesitarás inyectar DepartmentService
-  const departments = this.departmentService.departments$();
-  return departments.some(d => d.id === departmentId);
+  private isValidDepartment(departmentId: string): boolean {
+  // Verificamos si el departamento existe en las relaciones
+  const departmentIds = Array.from(localStorage.getItem('departments') ? 
+    JSON.parse(localStorage.getItem('departments')!).map((d: any) => d.id) : 
+    []);
+  return departmentIds.includes(departmentId);
 }
 
 

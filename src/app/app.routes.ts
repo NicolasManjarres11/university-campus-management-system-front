@@ -50,6 +50,17 @@ export const routes: Routes = [
         canActivate: [roleGuard],
         data: { roles: [UserRole.ADMIN, UserRole.PROFESSOR, UserRole.STUDENT] }
       },
+      {
+        path: 'users/:userId',
+        loadComponent: () => import('@features/users/components/user-detail/user-detail').then(c => c.UserDetail),
+        canActivate: [roleGuard],
+        data: { roles: [UserRole.ADMIN, UserRole.PROFESSOR, UserRole.STUDENT] }
+      },
+      {
+        path: 'profile',
+        loadComponent: () => import('@features/users/components/user-detail/user-detail').then(c => c.UserDetail),
+        canActivate: [roleGuard]
+      },
 
       {
         path: 'courses',

@@ -21,7 +21,7 @@
                   }
                   @if(!authService.isAdmin()){
                     <li>
-                        <a [routerLink]="['/users/edit/', userId()]" routerLinkActive="border-b-2 border-white" class="py-2 px-4 text-sm inline-block font-bold rounded cursor-pointer hover:text-purple-800 hover:bg-white hover:font-semibold transition-colors">
+                        <a routerLink="/profile" routerLinkActive="border-b-2 border-white" class="py-2 px-4 text-sm inline-block font-bold rounded cursor-pointer hover:text-purple-800 hover:bg-white hover:font-semibold transition-colors">
                           Mi perfil
                         </a>
                       </li>

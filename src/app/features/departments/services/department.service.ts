@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { Department, CreateDepartmentRequest, UpdateDepartmentRequest } from '../models/department.model';
 import { AuthService } from '@core/services';
-import { CourseService } from '@features/courses/services/course.service';
+import { EntityRelationshipService } from '@core/services/entity-relationship.service';
 import { UserRole } from '@features/users/models/user.model';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class DepartmentService {
 
   constructor(
     private authService: AuthService,
-    private courseService : CourseService
+    private relationshipService: EntityRelationshipService
   ) {
     this.loadDepartmentsFromStorage();
   }
@@ -174,7 +174,9 @@ export class DepartmentService {
     }
 
     const department = this.departments().find(d => d.id === id);
-    const courseEnrolled = this.courseService.courses$().some(c => c.departmentId === id)
+    
+    // Usamos el servicio de relaciones para verificar si hay cursos relacionados en el departamento
+    const courseEnrolled = this.relationshipService.hasDepartmentCourses(id)
 
     if (!department) {
       return {

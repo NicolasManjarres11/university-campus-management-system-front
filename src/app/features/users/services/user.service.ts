@@ -46,6 +46,28 @@ export class UserService{
           }, 300);
         });
       }
+      
+    // Método para obtener información básica de todos los usuarios (para dropdowns, etc.)
+    // Este método es accesible para todos los usuarios autenticados
+    getAllUsersBasicInfo(): Promise<User[]> {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            const users = this.users();
+            if (users.length === 0) {
+                reject('No hay usuarios registrados');
+                return;
+            }
+            
+            // Devolvemos solo información básica de los usuarios (sin contraseñas)
+            const usersBasicInfo = users.map(user => {
+                const { password, ...userBasicInfo } = user;
+                return userBasicInfo as User;
+            });
+            
+            resolve(usersBasicInfo);
+          }, 300);
+        });
+      }
 
     //Obtener usuario por ID
 
@@ -63,6 +85,22 @@ export class UserService{
           }
 
           resolve(userById);
+        });
+      }
+      
+    // Método para obtener información básica de un usuario por ID
+    // Este método es accesible para todos los usuarios autenticados
+    getUserBasicInfoById(id: string): Promise<User | undefined> {
+        return new Promise((resolve, reject) => {
+          const userById = this.users().find(u => u.id === id);
+          if(!userById){
+            reject('Usuario no encontrado');
+            return;
+          }
+          
+          // Devolvemos solo información básica del usuario (sin contraseña)
+          const { password, ...userBasicInfo } = userById;
+          resolve(userBasicInfo as User);
         });
       }
 

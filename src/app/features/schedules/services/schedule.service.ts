@@ -4,6 +4,7 @@ import { AuthService } from '@core/services';
 import { CourseService } from '@features/courses/services/course.service';
 import { UserRole } from '@features/users/models/user.model';
 import { UserService } from '@features/users/services/user.service';
+import { EnrollmentService } from '@features/courses/services/enrollment.service';
 
 @Injectable({ providedIn: 'root' })
 export class ScheduleService {
@@ -13,16 +14,25 @@ export class ScheduleService {
   constructor(
     private authService: AuthService,
     private courseService: CourseService,
-    private userService: UserService
+    private userService: UserService,
+    private enrollmentService: EnrollmentService
   ) {
     this.loadFromStorage();
   }
 
   // Visualización según usuario actual
 
-  getSchedules(enrolledCourseIds: string[] = []): Promise<Schedule[]> {
+  getAllSchedules(): Promise<Schedule[]> {
     return new Promise((resolve) => {
       setTimeout(() => {
+        resolve(this.schedules());
+      }, 250);
+    });
+  }
+  
+  getSchedules(): Promise<Schedule[]> {
+    return new Promise(async (resolve) => {
+      try {
         const currentUser = this.authService.user();
         if (!currentUser) {
           resolve([]);
@@ -39,9 +49,19 @@ export class ScheduleService {
           return;
         }
 
-        // STUDENT
-        resolve(this.schedules().filter(s => enrolledCourseIds.includes(s.courseId)));
-      }, 250);
+        // STUDENT - Solo ver horarios de cursos en los que está inscrito
+        if (currentUser.role === UserRole.STUDENT) {
+          const myEnrollments = await this.enrollmentService.getMyEnrollments();
+          const enrolledCourseIds = myEnrollments.map(e => e.courseId);
+          resolve(this.schedules().filter(s => enrolledCourseIds.includes(s.courseId)));
+          return;
+        }
+
+        resolve([]);
+      } catch (error) {
+        console.error('Error al obtener horarios:', error);
+        resolve([]);
+      }
     });
   }
 
