@@ -2,40 +2,64 @@ import { Injectable, signal } from '@angular/core';
 import { Grade, CreateGradeRequest, UpdateGradeRequest } from '../models/grade.model';
 import { AuthService } from '@core/services';
 import { UserRole } from '@features/users/models/user.model';
+import { EnrollmentService } from '@features/courses/services/enrollment.service';
 
 @Injectable({ providedIn: 'root' })
 export class GradeService {
   private grades = signal<Grade[]>([]);
   public readonly grades$ = this.grades.asReadonly();
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private enrollmentService: EnrollmentService
+  ) {
     this.loadFromStorage();
   }
 
 
-  getGradesForCurrentUser(enrolledCourseIds?: string[]): Promise<Grade[]> {
+  getAllGrades(): Promise<Grade[]> {
     return new Promise((resolve) => {
       setTimeout(() => {
+        resolve(this.grades());
+      }, 200);
+    });
+  }
+  
+  getGradesForCurrentUser(): Promise<Grade[]> {
+    return new Promise(async (resolve) => {
+      try {
         const currentUser = this.authService.user();
         if (!currentUser) {
           resolve([]);
           return;
         }
+        
         if (currentUser.role === UserRole.ADMIN) {
           resolve(this.grades());
           return;
         }
+        
         if (currentUser.role === UserRole.PROFESSOR) {
           resolve(this.grades().filter(g => g.professorId === currentUser.id));
           return;
         }
-        // STUDENT
-        let result = this.grades().filter(g => g.studentId === currentUser.id);
-        if (Array.isArray(enrolledCourseIds) && enrolledCourseIds.length > 0) {
-          result = result.filter(g => enrolledCourseIds.includes(g.courseId));
+        
+        // STUDENT - Solo ver calificaciones de cursos en los que está inscrito
+        if (currentUser.role === UserRole.STUDENT) {
+          const myEnrollments = await this.enrollmentService.getMyEnrollments();
+          const enrolledCourseIds = myEnrollments.map(e => e.courseId);
+          const result = this.grades().filter(g => 
+            g.studentId === currentUser.id && enrolledCourseIds.includes(g.courseId)
+          );
+          resolve(result);
+          return;
         }
-        resolve(result);
-      }, 200);
+        
+        resolve([]);
+      } catch (error) {
+        console.error('Error al obtener calificaciones:', error);
+        resolve([]);
+      }
     });
   }
 

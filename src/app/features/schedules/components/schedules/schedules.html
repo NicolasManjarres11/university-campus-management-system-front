@@ -1,1 +1,151 @@
-<p>schedules works!</p>
+<div class="container mx-auto py-6">
+  <h1 class="text-3xl font-bold mb-6 text-purple-800 relative">Horarios de Cursos</h1>
+
+  @if(authService.isStudent()) {
+    <div class="mb-6 p-4 bg-blue-50 border-l-4 border-blue-400 text-blue-700 rounded">
+      <div class="flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <p class="font-medium">Solo puedes ver los horarios de los cursos en los que estás inscrito.</p>
+      </div>
+    </div>
+  }
+
+  <div class="mb-8 flex flex-col sm:flex-row items-center justify-center gap-4 p-6 bg-white rounded-xl shadow-md">
+    <input
+      [(ngModel)]="filter"
+      type="text"
+      placeholder="Filtrar por curso, profesor o día"
+      class="flex-grow w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg placeholder:text-gray-500">
+  </div>
+
+  <div class="bg-white rounded-lg shadow-md p-6 mb-6 relative">
+    @if(loading()){
+      <app-loading 
+        [message]="'Cargando horarios...'" 
+        [spinnerColor]="'border-purple-600'" 
+        [bgColor]="'bg-white'" 
+        [bgOpacity]="'bg-opacity-90'"
+        [fullScreen]="false">
+      </app-loading>
+    }
+    
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-semibold mb-4">Listado de Horarios</h2>
+      @if(canEditSchedule()){
+        <a routerLink="/schedules/create" class="py-2 px-4 text-center bg-purple-600 text-white font-semibold rounded-md shadow-md hover:bg-purple-500 mr-4">Crear horario</a>
+      }
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Curso
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Profesor
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Horario
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Acciones
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          @if(schedules().length === 0 && !loading() && !error()) {
+            <tr>
+              <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                @if(authService.isStudent()) {
+                  No tienes horarios disponibles. Inscríbete en cursos para ver sus horarios.
+                } @else {
+                  No hay horarios registrados
+                }
+              </td>
+            </tr>
+          }
+
+          @if(error()) {
+            <tr>
+              <td colspan="4" class="px-6 py-4 text-center text-red-500">
+                {{ error() }}
+              </td>
+            </tr>
+          }
+
+          @for(schedule of schedules(); track schedule.id) {
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">{{ getCourseName(schedule.courseId) }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ getProfessorName(schedule.professorId) }}</div>
+              </td>
+              <td class="px-6 py-4">
+                <div class="text-sm text-gray-500">{{ schedule.schedule }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <a [routerLink]="['/schedules', schedule.id]" class="text-blue-600 hover:text-blue-900 mr-3 hover:cursor-pointer">Ver</a>
+                @if(canEditSchedule()){
+                  <a [routerLink]="['/schedules/edit', schedule.id]" class="text-indigo-600 hover:text-indigo-900 mr-3 hover:cursor-pointer">Editar</a>
+                  <button 
+                    class="text-red-600 hover:text-red-900 hover:cursor-pointer" 
+                    (click)="confirmDelete(schedule.id)">
+                    Eliminar
+                  </button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación de eliminación -->
+  @if(showDeleteConfirmation()) {
+    <div class="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-md bg-black/30">
+      <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-xl">
+        <div class="flex items-center mb-4">
+          <svg class="w-8 h-8 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+          </svg>
+          <h2 class="text-xl font-bold text-gray-800">Confirmar eliminación</h2>
+        </div>
+        <p class="mb-6 text-gray-600">¿Estás seguro de que deseas eliminar este horario? Esta acción no se puede deshacer.</p>
+        
+        <div class="flex justify-end space-x-3">
+          <button 
+            class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 hover:cursor-pointer transition-colors"
+            (click)="cancelDelete()">
+            Cancelar
+          </button>
+          <button 
+            class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-500 hover:cursor-pointer transition-colors"
+            (click)="deleteSchedule()">
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Notificación de éxito -->
+  @if(showSuccess()){
+    <div class="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-md bg-white/30">
+      <div class="bg-white rounded-3xl p-8 max-w-md w-full mx-4 text-center shadow-xl border-2 border-black relative">
+        <h2 class="text-2xl font-bold mb-2">¡Eliminado!</h2>
+        <p class="text-xl mt-4 mb-6">Se ha eliminado el horario correctamente.</p>
+        <div class="flex justify-center">
+          <svg class="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  }
+</div>
